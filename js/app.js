@@ -276,10 +276,24 @@ const kirimBalasan = async () => {
   document.getElementById("kirimbalasan").innerHTML = tmp;
 };
 
-const remove_data = (uuid) => {
+const remove_data = async (uuid) => {
   const element = document.getElementById(uuid);
   if (element) {
-    element.remove();
+    // Send a DELETE request to the API to delete the comment
+    const apiUrl = "https://undangan-api-gules.vercel.app"; // Replace with the correct API URL
+    const response = await fetch(`${apiUrl}/comments/${uuid}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Check if the deletion was successful
+    if (response.ok) {
+      element.remove();
+    } else {
+      console.error("Error deleting comment:", response.statusText);
+    }
   }
 };
 
